@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript - Drag and Drop Demo</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        .drop-targets{
+            display: flex;
+            gap: 1rem;
+        }
+        .box{
+            background-color: aliceblue;
+            height: 100px;
+            width: 100px;
+            display: flex;
+align-items: center;
+justify-content: center;
+        }
+        .item{
+            height: 30px;
+            width: 30px;
+            background-color: yellowgreen;
+        }
+        .hide{
+            display: none;
+        }
+        .drag-over{
+            border:2px dashed rgba(255, 0, 0, 0.298);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>JavaScript - Drag and Drop</h1>
+        <div class="drop-targets">
+            <div class="box">
+                <div class="item" draggable="true" id="item">
+                </div>
+            </div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+    </div>
+    <script >
+        // select the item element
+const item = document.querySelector('.item');
+
+// attach the dragstart event handler
+item.addEventListener('dragstart', dragStart);
+
+// handle the dragstart
+function dragStart(e) {
+    e.dataTransfer.setData('text/plain', e.target.id);
+    setTimeout(() => {
+        e.target.classList.add('hide');
+    }, 0);
+}
+
+
+
+const boxes = document.querySelectorAll('.box');
+
+boxes.forEach(box => {
+    box.addEventListener('dragenter', dragEnter)
+    box.addEventListener('dragover', dragOver);
+    box.addEventListener('dragleave', dragLeave);
+    box.addEventListener('drop', drop);
+});
+
+
+function dragEnter(e) {
+    e.preventDefault();
+    e.target.classList.add('drag-over');
+}
+
+function dragOver(e) {
+    e.preventDefault();
+    e.target.classList.add('drag-over');
+}
+
+function dragLeave(e) {
+    e.target.classList.remove('drag-over');
+}
+
+function drop(e) {
+    e.target.classList.remove('drag-over');
+
+      // get the draggable element
+      const id = e.dataTransfer.getData('text/plain');
+    const draggable = document.getElementById(id);
+
+    // add it to the drop target
+    e.target.appendChild(draggable);
+
+    // display the draggable element
+    draggable.classList.remove('hide');
+
+}
+    </script>
+</body>
+
+</html>

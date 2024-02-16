@@ -1,0 +1,24 @@
+Hi,
+
+Following are the updates for 16th Feb 2024:
+
+List of Completed Tasks: 
+------------------------------------------------------------------------
+I am Learning Nextjs...
+          
+1) I have completed Topics like parallel routes with intercepting route.
+2) I have completed dynamic routes with images dashborad example 
+3) I have completed API route handler in nextjs 14 like how to create Endpoints
+GET, PATCH, DELETE, POST in Next.js 14
+
+-------------------------------------------------------------------------
+I am Learning Nextjs...
+
+
+Notes:
+--------------------------------------------------------------------------
+- FYI, I am leaving for the day now. 
+
+Please check with the latest updates and let me know your thoughts on the same.
+
+Thanks.

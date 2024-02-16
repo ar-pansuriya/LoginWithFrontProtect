@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <style>
+      #taskList {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+      li {
+        display: flex;
+        gap: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Task Manager</h1>
+
+    <form id="taskForm">
+      <label for="taskTitle">Task Title:</label>
+      <input type="text" id="taskTitle" required />
+
+      <label for="taskDescription">Task Description:</label>
+      <input type="text" id="taskDescription" required />
+
+      <button class="taskbtn" type="submit">Add</button>
+    </form>
+
+    <ul id="taskList"></ul>
+
+    <button id="clearTasks">Clear All Tasks</button>
+
+    <script>
+      let edittaskvalue = false;
+      let tasktoedit = {};
+      const taskbtn = document.querySelector(".taskbtn");
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const taskForm = document.getElementById("taskForm");
+        const taskTitleInput = document.getElementById("taskTitle");
+        const taskDescriptionInput = document.getElementById("taskDescription");
+        const taskList = document.getElementById("taskList");
+        const clearTasksButton = document.getElementById("clearTasks");
+
+        taskForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const title = taskTitleInput.value.trim();
+          const description = taskDescriptionInput.value.trim();
+
+          if (title && description) {
+            addTask(title, description);
+            taskForm.reset();
+          }
+        });
+
+        clearTasksButton.addEventListener("click", function () {
+          clearTasks();
+        });
+
+        loadTasks();
+      });
+
+      function addTask(title, description) {
+        if (!edittaskvalue) {
+          const task = {
+            title,
+            description,
+          };
+
+          const tasks = getTasks();
+
+          tasks.push(task);
+
+          saveTasks(tasks);
+
+          displayTasks();
+          if (edittaskvalue) {
+            taskbtn.innerHTML = "Edit";
+          } else {
+            taskbtn.innerHTML = "Add";
+          }
+        } else {
+          const task = {
+            title,
+            description,
+          };
+          editedTask(task);
+          if (edittaskvalue) {
+            taskbtn.innerHTML = "Edit";
+          } else {
+            taskbtn.innerHTML = "Add";
+          }
+        }
+      }
+
+      function editedTask(task) {
+        // console.log(task);
+        const tasks = getTasks();
+        tasks.map((t) => {
+          if (t.title === tasktoedit.title) {
+            t.title = task.title;
+            t.description = task.description;
+            saveTasks(tasks);
+            displayTasks();
+          }
+        });
+        edittaskvalue = false;
+      }
+
+      function displayTasks() {
+        const tasks = getTasks();
+        const taskList = document.getElementById("taskList");
+
+        taskList.innerHTML = "";
+
+        tasks.forEach((task) => {
+          const li = document.createElement("li");
+          li.textContent = `${task.title}: ${task.description} `;
+
+          const removeButton = document.createElement("button");
+          removeButton.textContent = "Remove";
+          removeButton.addEventListener("click", function () {
+            removeTask(task);
+          });
+          const editButton = document.createElement("button");
+          editButton.textContent = "Edit";
+          editButton.addEventListener("click", function () {
+            editTask(task);
+          });
+
+          li.appendChild(removeButton);
+          li.appendChild(editButton);
+
+          taskList.appendChild(li);
+        });
+      }
+
+      function removeTask(taskToRemove) {
+        const tasks = getTasks();
+        const updatedTasks = tasks.filter(
+          (task) => task.title !== taskToRemove.title
+        );
+        console.log(updatedTasks);
+
+        saveTasks(updatedTasks);
+
+        displayTasks();
+      }
+
+      function editTask(editTask) {
+        const taskTitleInput = document.getElementById("taskTitle");
+        const taskDescriptionInput = document.getElementById("taskDescription");
+
+        taskTitleInput.value = editTask.title;
+        taskDescriptionInput.value = editTask.description;
+        edittaskvalue = true;
+        tasktoedit = editTask;
+        if (edittaskvalue) {
+          taskbtn.innerHTML = "Edit";
+        } else {
+          taskbtn.innerHTML = "Add";
+        }
+      }
+
+      function clearTasks() {
+        localStorage.removeItem("tasks");
+
+        displayTasks();
+      }
+
+      function getTasks() {
+        return JSON.parse(localStorage.getItem("tasks")) || [];
+      }
+
+      function saveTasks(tasks) {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      function loadTasks() {
+        displayTasks();
+      }
+    </script>
+  </body>
+</html>

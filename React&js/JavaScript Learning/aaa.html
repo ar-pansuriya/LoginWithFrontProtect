@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+let aa= {
+  name:'abcd',
+  mark:90,
+  grade:'aa'
+}
+console.log(aa);
+let newaa  = JSON.stringify(aa);
+console.log(newaa);
+let oldaa  =JSON.parse(newaa);
+
+console.log(oldaa);
+      function counter(c) {
+        let count = c;
+
+        return {
+          increment: function () {
+            count += 1;
+          },
+          decreament: function () {
+            count -= 1;
+          },
+          getvalue: function () {
+            console.log(count);
+          },
+        };
+      }
+
+      let c1 = counter(10);
+
+      c1.increment();
+      c1.increment();
+      c1.getvalue();
+      c1.decreament();
+      c1.getvalue();
+    </script>
+  </body>
+</html>
